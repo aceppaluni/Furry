@@ -9,6 +9,7 @@ export default function App() {
     </View>
   );
 }
+// using react native routing 
 
 const styles = StyleSheet.create({
   container: {
