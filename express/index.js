@@ -42,27 +42,27 @@ app.post('/register', async (req, res) => {
         const {name, email, password} = req.body;
 
         //check if pup is already registered
-        const existingPup = await Pup.findOne({email})
-        if(existingPup) {
+        const existingUser = await Pup.findOne({email})
+        if(existingUser) {
             return res.status(404).json({message: 'Pup already registered'})
         }
 
         //create a new pup
-        const newPup = new Pup({
+        const newUser = new Pup({
             name,
             email,
             password
         })
 
         //generate verification token for new pup
-        newPup.verificationToken = crypto.randomBytes(20).toString('hex')
+        newUser.verificationToken = crypto.randomBytes(20).toString('hex')
 
         //saving pup to DB
-        await newPup.save()
+        await newUser.save()
 
-        sendVerficationEmail(newPup.email, newPup.verificationToken);
+        sendVerficationEmail(newUser.email, newUser.verificationToken);
 
-        res.status(200).json({message: 'Pup registered successfully', userId: newPup._id})
+        res.status(200).json({message: 'Pup registered successfully', userId: newUser._id})
         // may not be user may need to be pup
     } catch (error) {
         res.status(404).json({message: 'Registration failed'});
