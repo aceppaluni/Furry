@@ -44,12 +44,13 @@ app.get('/', (req, res) => {
 app.post('/register', async (req, res) => {
     try {
         
-        const {name, email, password} = req.body;
+        const {name, email, password, verified} = req.body;
 
         //check if pup is already registered
         const existingUser = await User.findOne({email})
         
         if(existingUser) {
+            console.log('Email already registered')
             return res.status(404).json({message: 'Pup already registered'})
         }
 
@@ -57,9 +58,11 @@ app.post('/register', async (req, res) => {
         const newUser = new User({
             name,
             email,
-            password
+            password,
+            verified
         })
-        console.log(newUser)
+        console.log("register point", newUser)
+        
         //generate verification token for new pup
         newUser.verificationToken = crypto.randomBytes(20).toString('hex')
 
@@ -67,7 +70,7 @@ app.post('/register', async (req, res) => {
         await newUser.save()
 
         sendVerficationEmail(newUser.email, newUser.verificationToken);
-
+    
         res.status(200).json({message: 'Pup registered successfully', userId: newUser._id})
         // may not be user may need to be pup
     } catch (error) {
@@ -78,11 +81,13 @@ app.post('/register', async (req, res) => {
 
 const sendVerficationEmail = async (email, verificationToken) => {
     const transporter = nodemailer.createTransport({
-        service: 'gmail',
+        host: 'smtp.ethereal.email',
+        port: 587,
         auth: {
-            user: 'aceppaluni@gmail.com',
-            pass: 'jewels19'
+            user: 'herta.nienow@ethereal.email',
+            pass: 'Tayt8FkUy7cnukwSpb'
         }
+
     })
 
     const mailOptions = {
@@ -94,16 +99,19 @@ const sendVerficationEmail = async (email, verificationToken) => {
 
     try {
         await transporter.sendMail(mailOptions);
+        
+        //console.log('Email sent!')
     } catch (error) {
         console.log('Error sending verification email')
     }
-}
+};
 
 //endpoint to verify user 
-app.get('verify/:token',async (req, res) => {
+app.get('/verify/:token',async (req, res) => {
     try {
         const token = req.params.token;
         const user = await User.findOne({verificationToken: token});
+        console.log("User", user)
 
         if(!user) {
            return res.status(404).json({message: "Invalid verification token"})
@@ -113,12 +121,13 @@ app.get('verify/:token',async (req, res) => {
         user.verificationToken = undefined;
 
         await user.save()
+        console.log('User', user)
 
         res.status(200).json({message: 'Email successfully verified'})
     } catch (error) {
         res.status(404).json({message: "Email verification failed"})
     }
-})
+});
 
 const generateSecrectKey = () => {
     const secretkey = crypto.randomBytes(32).toString('hex')
@@ -127,3 +136,26 @@ const generateSecrectKey = () => {
 }
 
 const secretkey = generateSecrectKey()
+
+//endpoint to login user 
+app.post('/login', async (req, res) => {
+    try {
+        const {email, password} = req.body;
+
+        const user = await User.findOne({email})
+        console.log("login", user)
+        if(!user) {
+            return res.status(401).json({message: "Invalid email or password"})
+        }
+
+        if(user.password !== password) {
+            return res.status(401).json({message: 'Invlaid Password'})
+        }
+
+        const token = jwt.sign({userId: user._id,}, secretkey)
+
+        res.status(200).json({token})
+    } catch (error) {
+        res.status(404).json({message: 'Failed to login'})
+    }
+})

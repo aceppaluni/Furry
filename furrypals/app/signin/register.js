@@ -8,7 +8,7 @@ const register = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [verified, setVerified] = useState(false)
+    //const [verified, setVerified] = useState(false)
     const router = useRouter();
 
     const handelRegister = () => {
@@ -16,7 +16,7 @@ const register = () => {
             name: name,
             email: email,
             password: password,
-            verified: verified
+            //verified: verified
         }
 
         axios.post('http://localhost:5000/register', user)
@@ -26,7 +26,7 @@ const register = () => {
             setName('');
             setEmail('');
             setPassword('');
-            setVerified(true)
+            //setVerified(true)
             router.replace('/signin/gender')
         })
         .catch((error) => {
