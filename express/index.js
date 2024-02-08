@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000
 const http = require('http').createServer(app)
 const io = require('socket.io')
 
-app.use(cors)
+app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
@@ -19,10 +19,10 @@ const jwt = require('jsonwebtoken');
 const Pup = require('./models/user');
 //const Chat = require('./models/chat')
 
-const url = 'mongodb://localhost:27017/pupsdb'
+const url = 'mongodb://localhost:27017/users'
 mongoose.connect(url, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
+    //useUnifiedTopology: true,
+    //useNewUrlParser: true,
 })
 .then(() => {
     console.log('Connected to server')
@@ -43,6 +43,7 @@ app.post('/register', async (req, res) => {
 
         //check if pup is already registered
         const existingUser = await Pup.findOne({email})
+        
         if(existingUser) {
             return res.status(404).json({message: 'Pup already registered'})
         }

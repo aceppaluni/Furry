@@ -19,7 +19,7 @@ const register = () => {
 
         axios.post('http://localhost:5000/register', user)
         .then((response) => {
-            console.log(response)
+            // console.log(response)
             // Alert.alert('Success', "Your pup has been registered!")
             // setName('');
             // setEmail('');
@@ -27,8 +27,10 @@ const register = () => {
             // router.replace('/signin/gender')
         })
         .catch((error) => {
-            console.log(error)
-            Alert.alert("Error", "Error registering your pup")
+            //console.log(error)
+            //console.log(error.message);
+            //console.log(error.response);
+            //Alert.alert("Error", "Error registering your pup")
         })
     }
 
