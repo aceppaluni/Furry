@@ -8,29 +8,32 @@ const register = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [verified, setVerified] = useState(false)
     const router = useRouter();
 
     const handelRegister = () => {
         const user = {
             name: name,
             email: email,
-            password: password
+            password: password,
+            verified: verified
         }
 
         axios.post('http://localhost:5000/register', user)
         .then((response) => {
-            // console.log(response)
-            // Alert.alert('Success', "Your pup has been registered!")
-            // setName('');
-            // setEmail('');
-            // setPassword('');
-            // router.replace('/signin/gender')
+            console.log(response)
+            Alert.alert('Success', "Your pup has been registered!")
+            setName('');
+            setEmail('');
+            setPassword('');
+            setVerified(true)
+            router.replace('/signin/gender')
         })
         .catch((error) => {
-            //console.log(error)
-            //console.log(error.message);
-            //console.log(error.response);
-            //Alert.alert("Error", "Error registering your pup")
+            console.log(error)
+            console.log(error.message);
+            console.log(error.response);
+            Alert.alert("Error", "Error registering your pup")
         })
     }
 
