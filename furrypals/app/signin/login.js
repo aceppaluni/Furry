@@ -17,7 +17,7 @@ const login = () => {
                 const token = await AsyncStorage.getItem('auth')
 
                 if(token) {
-                    router.replace('/screens/profile')
+                    router.replace('/screens/profile/profile')
                 }
 
             } catch (error) {
@@ -25,7 +25,7 @@ const login = () => {
             }
         }
         checkLogin()
-    })
+    }, [])
     
     const handelLogin = () => {
         const user = {
@@ -33,7 +33,7 @@ const login = () => {
             password: password
         }
 
-        axios.post('http://localhost:5000/login', user)
+        axios.post('http://10.0.0.11:5000/login', user)
         .then((response) => {
             const token = response.data.token;
             AsyncStorage.setItem('auth', token)

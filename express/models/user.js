@@ -20,7 +20,7 @@ const Userschema = new Schema({
     },
     verified: {
         type: Boolean,
-        required: true
+        required: false
     },
     verificationToken: String,
     age: {
@@ -29,19 +29,19 @@ const Userschema = new Schema({
     crushes: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Pup'
+            ref: 'User'
         }
     ],
     recievedLikes: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Pup'
+            ref: 'User'
         }
     ],
     matches: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Pup'
+            ref: 'User'
         }
     ],
     description: {

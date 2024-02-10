@@ -16,6 +16,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+
 const User = require('./models/user');
 //const Chat = require('./models/chat')
 
@@ -43,14 +45,14 @@ app.get('/', (req, res) => {
 // endpoint to register pup to backend 
 app.post('/register', async (req, res) => {
     try {
-        
-        const {name, email, password, verified} = req.body;
+           
+        const {name, email, password} = req.body;
 
         //check if pup is already registered
         const existingUser = await User.findOne({email})
         
         if(existingUser) {
-            console.log('Email already registered')
+            //console.log('Email already registered')
             return res.status(404).json({message: 'Pup already registered'})
         }
 
@@ -59,7 +61,6 @@ app.post('/register', async (req, res) => {
             name,
             email,
             password,
-            verified
         })
         console.log("register point", newUser)
         
@@ -72,7 +73,6 @@ app.post('/register', async (req, res) => {
         sendVerficationEmail(newUser.email, newUser.verificationToken);
     
         res.status(200).json({message: 'Pup registered successfully', userId: newUser._id})
-        // may not be user may need to be pup
     } catch (error) {
         //res.status(404).json({message: 'Registration failed'});
         res.send(error)
@@ -84,8 +84,8 @@ const sendVerficationEmail = async (email, verificationToken) => {
         host: 'smtp.ethereal.email',
         port: 587,
         auth: {
-            user: 'herta.nienow@ethereal.email',
-            pass: 'Tayt8FkUy7cnukwSpb'
+            user: 'darrel96@ethereal.email',
+            pass: 'V6EhZ9xyF6py2hSUs9'
         }
 
     })
@@ -99,19 +99,18 @@ const sendVerficationEmail = async (email, verificationToken) => {
 
     try {
         await transporter.sendMail(mailOptions);
-        
-        //console.log('Email sent!')
     } catch (error) {
         console.log('Error sending verification email')
     }
 };
+
 
 //endpoint to verify user 
 app.get('/verify/:token',async (req, res) => {
     try {
         const token = req.params.token;
         const user = await User.findOne({verificationToken: token});
-        console.log("User", user)
+        //console.log("User", user)
 
         if(!user) {
            return res.status(404).json({message: "Invalid verification token"})
@@ -129,7 +128,8 @@ app.get('/verify/:token',async (req, res) => {
     }
 });
 
-const generateSecrectKey = () => {
+const generateSecrectKey = (id) => {
+    
     const secretkey = crypto.randomBytes(32).toString('hex')
 
     return secretkey
@@ -143,13 +143,13 @@ app.post('/login', async (req, res) => {
         const {email, password} = req.body;
 
         const user = await User.findOne({email})
-        console.log("login", user)
+        
         if(!user) {
             return res.status(401).json({message: "Invalid email or password"})
         }
 
         if(user.password !== password) {
-            return res.status(401).json({message: 'Invlaid Password'})
+            return res.json({message: 'Invlaid Password'})
         }
 
         const token = jwt.sign({userId: user._id,}, secretkey)
@@ -158,4 +158,22 @@ app.post('/login', async (req, res) => {
     } catch (error) {
         res.status(404).json({message: 'Failed to login'})
     }
+})
+
+//endpoint to get users 
+app.get('/users/:userId', async (req, res) => {
+    try {
+        const {userId} = req.params
+
+        const user = await User.findById(userId)
+
+        if(!user) {
+            return res.status(404).json({message: "User not found"})
+        }
+
+        return res.status(200).json({user})
+    } catch (error) {
+        res.status(500).json({message: "Failed to load users"})
+    }
+    //res.send('Hello')
 })
