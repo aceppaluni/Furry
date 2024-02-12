@@ -8,7 +8,6 @@ const register = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    //const [verified, setVerified] = useState(false)
     const router = useRouter();
 
     const handelRegister = () => {
@@ -16,7 +15,6 @@ const register = () => {
             name: name,
             email: email,
             password: password,
-            //verified: verified
         }
 
         axios.post('http://10.0.0.11:5000/register', user)
@@ -26,7 +24,6 @@ const register = () => {
             setName('');
             setEmail('');
             setPassword('');
-            //setVerified(true)
         })
         .catch((error) => {
             console.log(error)

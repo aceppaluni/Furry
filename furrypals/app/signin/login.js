@@ -11,21 +11,35 @@ const login = () => {
     const [password, setPassword] = useState('');
     const router = useRouter();
 
+    // useEffect(() => {
+    //     const checkLogin = async () => {
+    //         try {
+    //             const token = await AsyncStorage.getItem('auth')
+
+    //             if(token) {
+    //                 //router.replace('/screens/profile/bio')
+    //             }
+
+    //         } catch (error) {
+    //             console.log('Error')
+    //         }
+    //     }
+    //     checkLogin()
+    // }, [])
+
     useEffect(() => {
-        const checkLogin = async () => {
-            try {
-                const token = await AsyncStorage.getItem('auth')
-
-                if(token) {
-                    router.replace('/screens/profile/profile')
+        const checkLoginStatus = async () => {
+            try{
+                const token = await AsyncStorage.getItem("auth");
+                if(token){
+                    router.replace("/screens/profile/bio")
                 }
-
-            } catch (error) {
-                console.log('Error')
+            } catch(error){
+                console.log("Error",error)
             }
         }
-        checkLogin()
-    }, [])
+        checkLoginStatus()
+      },[])
     
     const handelLogin = () => {
         const user = {
@@ -41,7 +55,7 @@ const login = () => {
         })
         .catch((error) => {
             console.log("Error occured", error)
-        })
+        });
     }
 
   return (

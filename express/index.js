@@ -177,3 +177,24 @@ app.get('/users/:userId', async (req, res) => {
     }
     //res.send('Hello')
 })
+
+// endpoint to update the user gender 
+app.put('/users/:userId/gender', async(req, res) => {
+    try {
+        const {userId} = req.params
+        const {gender} = req.body
+
+        const user = await User.findByIdAndUpdate(userId, {gender: gender}, {new: true})
+        console.log('gender:',user.gender)
+        if(!user) {
+            res.status(404).json({message: 'user not found'})
+        }
+
+        return res.status(200).json({message: 'user gender updated successfully'})
+    } catch (error) {
+        res.status(500).json({message: 'Failed to update gender'})
+    }
+})
+
+
+  
