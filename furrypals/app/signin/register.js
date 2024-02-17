@@ -61,7 +61,7 @@ const register = () => {
             </Pressable>
         </View>
 
-        <Pressable onPress={() => router.replace('/signin/login')} style={{ marginTop: 20 }}>
+        <Pressable onPress={() => router.replace('/signin/login')} style={{ marginTop: 30 }}>
             <Text style={{textAlign: "center", color: "#452817", fontSize: 20}}>Existing user</Text>
         </Pressable>
     </SafeAreaView>

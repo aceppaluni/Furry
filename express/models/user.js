@@ -40,19 +40,19 @@ const Userschema = new Schema({
     ],
     matches: [
         {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
-        }
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
     ],
     description: {
         type: String,
     },
-    profileImage: [
+    profileImages: [
         {
             type: String
         }
     ],
-    lookingfor: [
+    lookingFor: [
         {
             type: String
         }

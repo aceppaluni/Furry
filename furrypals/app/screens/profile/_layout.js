@@ -3,7 +3,7 @@ import { Stack } from 'expo-router'
 
 export default layout = () => {
   return (
-    <Stack>
+    <Stack screenOptions={{headerShown: false}}>
       <Stack.Screen name='bio'></Stack.Screen>
     </Stack>
   )

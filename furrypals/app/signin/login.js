@@ -11,35 +11,20 @@ const login = () => {
     const [password, setPassword] = useState('');
     const router = useRouter();
 
-    // useEffect(() => {
-    //     const checkLogin = async () => {
-    //         try {
-    //             const token = await AsyncStorage.getItem('auth')
-
-    //             if(token) {
-    //                 //router.replace('/screens/profile/bio')
-    //             }
-
-    //         } catch (error) {
-    //             console.log('Error')
-    //         }
-    //     }
-    //     checkLogin()
-    // }, [])
-
     useEffect(() => {
         const checkLoginStatus = async () => {
             try{
                 const token = await AsyncStorage.getItem("auth");
                 if(token){
                     router.replace("/screens/profile/bio")
+                    console.log(token)
                 }
             } catch(error){
                 console.log("Error",error)
             }
         }
         checkLoginStatus()
-      },[])
+    },[])
     
     const handelLogin = () => {
         const user = {
@@ -74,7 +59,7 @@ const login = () => {
         <TextInput placeholder='Password' style={{backgroundColor: "white",  height: 50}} value={password} onChangeText={(text) => setPassword(text)} />
     </View>
 
-    <View style={{margin: 38}}>
+    <View style={{margin: 38,}}>
         <Pressable style={{backgroundColor: "white", borderColor: "black" ,padding: 5, marginTop: 20, height: 50}} onPress={handelLogin}>
             <Text style={{textAlign: 'center', marginTop: 8, fontSize: 22, color: '#452817'}}>Login</Text>
         </Pressable>

@@ -5,6 +5,7 @@ import { Redirect } from "expo-router";
 const index = () => {
   return (
     <Redirect href='/signin/register'/>
+    // make sure to change back when done with screen
   )
 }
 export default index
