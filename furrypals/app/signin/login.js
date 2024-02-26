@@ -17,7 +17,7 @@ const login = () => {
                 const token = await AsyncStorage.getItem("auth");
                 if(token){
                     router.replace("/screens/profile/bio")
-                    console.log(token)
+                    //console.log(token)
                 }
             } catch(error){
                 console.log("Error",error)

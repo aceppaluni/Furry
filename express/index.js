@@ -9,17 +9,17 @@ const app = express()
 const PORT = process.env.PORT || 5000
 
 const http = require('http').createServer(app)
-const io = require('socket.io')
+const io = require('socket.io')(http)
 
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
 
 const User = require('./models/user');
-//const Chat = require('./models/chat')
+const Chat = require('./models/message');
+//const { Server } = require('http');
 
 const url = 'mongodb://localhost:27017/pupsdb'
 mongoose.connect(url, {
@@ -274,14 +274,12 @@ app.put('/users/:userId/looking-for/remove', async(req, res) => {
     }
 }); 
 
-// below are new endpoints 
-
-
 // endpoint to fetch user profiles 
-app.get('/profiles', async (req, res) => {
-    const {userId, gender, lookingFor} = req.query;
+app.get("/profiles", async (req, res) => {
+    const { gender, lookingFor} = req.body;
     try {
-        let filter = {gender: gender === 'male' ? 'female' : 'male'} // for gender filtering 
+       const {userId} = req.query;
+       let filter = {gender: gender === 'male' ? 'female' : 'male'} // for gender filtering 
 
         // add filtering based on lookingFor array - filtering to what logged in user is looking for 
         if(lookingFor) {
@@ -289,36 +287,35 @@ app.get('/profiles', async (req, res) => {
         }
 
         const currentUser = await User.findById(userId)
-        //.populate('matches', '_id')
-        //.populate('crushes', "_id")
-        console.log( 'user',currentUser)
-        //extract the user ids of matches
-       //const matchesIds = currentUser.matches.map((match) => match._id);
+        .populate("matches", "_id")
+        .populate("crushes", "_id")
+        //console.log(userId)
+        console.log('user',currentUser)
         
-        //const friendIds = currentUser.matches.includes((friend) => friend._id); 
-        //console.log('Matches:', currentUser.matches);
+        //extract the user ids of matches
+        const matchesIds = currentUser.matches.map((match) => match._id);
 
-        // extracting user ids of crushes 
-        //const crushesIds = currentUser.crushes.map((crush) => crush._id); 
+        // extracting user ids of crushes
+        const crushesIds = currentUser.crushes.flatMap((crush) => crush.id); 
 
         // getting user profiles 
-        const profiles = await User.find(filter).where('_id').nin([userId])
+        const profiles = await User.find(filter).where("_id").nin([userId, ...crushesIds, ...matchesIds])
         //console.log(profiles)
         return res.status(200).json({profiles})
         
     } catch (error) {
-        console.error("Error fetching user:", error);
+        console.error(error);
         res.status(500).json({message: 'Error fetching user profiles '})
     }
 });
 
 // endpoint to send a like to a user 
-app.put('/send-like', async(req, res) => {
+app.post('/send-like', async(req, res) => {
     const {currentUserId, selectedUserId} = req.body;
 
     try {
         await User.findByIdAndUpdate(selectedUserId, {$push: {recievedLikes: currentUserId}}); 
-        await User.findByIdAndUpdate(selectedUserId, {$push: {crushes: selectedUserId}});
+        await User.findByIdAndUpdate(currentUserId, {$push: {crushes: selectedUserId}});
 
         res.sendStatus(200)
     } catch (error) {
@@ -339,12 +336,13 @@ app.get('/received-likes/:userId/details', async(req, res) => {
         const receivedLikesDetails = [];
         for (const likedUserId of user.recievedLikes) {
             const likedUser = await User.findById(likedUserId); 
-            if(!likedUserId) {
+            if(likedUser) {
                 receivedLikesDetails.push(likedUser)
             }
         }
 
         res.status(200).json({receivedLikesDetails})
+        //console.log({receivedLikesDetails})
     } catch (error) {
         res.status(500).json({message: 'error fetching received likes'})
     }
@@ -361,11 +359,12 @@ app.post('/create-match', async(req, res) => {
             $pull: {crushes: currentUserId}
         }); 
 
-        //updates current users and matches and received likes array 
+        //updates current users matches and received likes array 
         await User.findByIdAndUpdate(currentUserId, {
             $push: {matches: selectedUserId},
-            $pull: { receivedLikes: selectedUserId}
+            $pull: {receivedLikes: selectedUserId}
         }); 
+        res.sendStatus(200)
     } catch (error) {
         res.status(500).json({message: 'error creating match'})
     }
@@ -390,7 +389,69 @@ app.get('/users/:userId/matches', async(req, res) => {
         console.log(error)
         res.status(500).json({message: 'error fetching user matches'})
     }
+}); 
+ 
+// //users/65c92583070ea6dbb959d753/profile-images
+
+io.on("connection", (socket) => {
+    //console.log('User connected')
+
+    socket.on('sendMessage', async (data) => {
+        try {
+            const {senderId, receiverId, message} = data;
+            console.log(data)
+
+            const newMessage = new Chat({senderId, receiverId, message})
+            await newMessage.save(); 
+
+            io.to(receiverId).emit('receiveMessage', newMessage)
+        } catch (error) {
+            console.log(error)
+        }
+        socket.on('disconnect', () => {
+            console.log('disconnected')
+        });
+    });
 });
 
-//users/65c92583070ea6dbb959d753/profile-images
-  
+http.listen(8000, () => {
+    console.log('socket server running on port 8000')
+}); 
+
+app.get('/messages', async (req, res) => {
+    try {
+        const {senderId, receiverId} = req.query;
+        //console.log(senderId)
+        //console.log(receiverId)
+
+        const messages = await Chat.find({
+            $or: [
+                {senderId: senderId, receiverId: receiverId}, 
+                {senderId: receiverId, receiverId: senderId}
+            ]
+        }).populate("senderId", "_id name")
+
+        res.status(200).json(messages)
+    } catch (error) {
+        //console.log(error)
+        res.status(500).json({ message: "Error getting messages", error });
+    }
+}); 
+
+// //endpoint to delete messages 
+app.post('/delete', async (req, res) => {
+    try {
+        const {messages } = req.body; 
+        if(!Array.isArray(messages) || messages.length ==0) {
+            return res.status(404).json({message: 'invalid request body'})
+        }
+
+        for(const messageId of messages) {
+            await Chat.findByIdAndUpdate(messageId)
+        }
+
+        res.status(200).json({message: 'Message was deleted'})
+    } catch (error ) {
+        console.log(error)
+    }
+});

@@ -18,34 +18,36 @@ const users = () => {
       const decodedToken = jwtDecode(token)
       const userId = decodedToken.userId
       setUserId(userId)
-    }
+    };
     fetchUser();
 
-  },[])
+  },[]);
 
+  //console.log(userId)
   const fetchUserDecription = async () => {
     try {
       const response = await axios.get(`http://10.0.0.11:5000/users/${userId}`)
       const user = response.data
       setUser(user?.user)
+      //console.log(response)
     } catch (error) {
       console.log('Error fetching user description', error)
     }
-  };
+  }; // this console logs 
 
   const fetchUserProfiles = async () => {
     try {
-      const response = await axios.get(`http://10.0.0.11:5000/profiles`, {
+      const response = await axios.get("http://10.0.0.11:5000/profiles", {
         params: {
           userId: userId,
           gender: user?.gender,
-          lookingFor: user?.lookingFor
+          lookingFor: user?.lookingFor,
         }
       });
       setProfiles(response.data.profiles)
-      console.log('profiles', response)
+      //console.log(response)
     } catch (error) {
-      console.log('Error fetching profiles', error)
+      console.log(error)
     }
   }; 
 
@@ -57,25 +59,28 @@ const users = () => {
 
   useEffect(() => {
     if(userId && user) {
-      fetchUserProfiles
+      fetchUserProfiles()
     }
   }, [userId, user])
 
-  //console.log('profiles', profiles)
+  console.log('profiles', profiles)
   return (
     <View style={{flex: 1}}>
-      <FlatList data={profiles} keyExtractor={(item) => item.id}  
-      renderItem={({ item, index }) => (
-        <Profile 
-          key={index}
-          item={item}
-          userId={userId}
-          setProfiles={setProfiles}
-          //isEven={index % 2 === 0}
-        />)}
-      />
+       <FlatList data={profiles} renderItem={({ item, index }) => (
+          <Profile
+            key={index}
+            item={item}
+            userId={userId}
+            setProfiles={setProfiles}
+            isEven={index % 2 === 0}
+          />
+          )}
+        />
     </View>
   )
 }
 
 export default users
+
+
+

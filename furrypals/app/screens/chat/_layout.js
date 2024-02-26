@@ -1,8 +1,11 @@
 import {Stack} from 'expo-router'
+
 export default layout = () => {
     return (
-      <Stack screenOptions={{headerShown: false}}>
-        <Stack.Screen name='chat'></Stack.Screen>
+      <Stack>
+        <Stack.Screen name='index'options={{headerShown: false}}></Stack.Screen>
+        <Stack.Screen name='select' options={{headerShown: false}}></Stack.Screen>
+        <Stack.Screen name='chatroom'/>
       </Stack>
     )
   }
