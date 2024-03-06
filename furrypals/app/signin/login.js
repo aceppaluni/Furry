@@ -4,6 +4,7 @@ import { Text, StyleSheet, TextInput, Pressable, View } from "react-native";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { LinearGradient } from "expo-linear-gradient";
 
 const login = () => {
   const [email, setEmail] = useState("");
@@ -44,68 +45,70 @@ const login = () => {
   };
 
   return (
-    <SafeAreaView style={{ backgroundColor: "green", flexGrow: 5 }}>
-      <Text style={styles.siteName}>FurryPals</Text>
+    <LinearGradient colors={["#FDBB2D", "#22C1C3"]} style={{ flex: 1 }}>
+      <SafeAreaView style={{ flexGrow: 5 }}>
+        <Text style={styles.siteName}>FurryPals</Text>
 
-      <Text style={styles.title}>Login</Text>
+        <Text style={styles.title}>Login</Text>
 
-      <View style={{ margin: 38 }}>
-        <Text style={{ color: "#452817", fontSize: 18, margin: 5 }}>
-          Email:
-        </Text>
-        <TextInput
-          placeholder="Email"
-          style={{ backgroundColor: "white", height: 50 }}
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-        />
-      </View>
+        <View style={{ margin: 38 }}>
+          <Text style={{ color: "#452817", fontSize: 18, margin: 5 }}>
+            Email:
+          </Text>
+          <TextInput
+            placeholder="Email"
+            style={{ backgroundColor: "white", height: 50 }}
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+          />
+        </View>
 
-      <View style={{ margin: 38 }}>
-        <Text style={{ color: "#452817", fontSize: 18, margin: 5 }}>
-          Password:
-        </Text>
-        <TextInput
-          placeholder="Password"
-          style={{ backgroundColor: "white", height: 50 }}
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-        />
-      </View>
+        <View style={{ margin: 38 }}>
+          <Text style={{ color: "#452817", fontSize: 18, margin: 5 }}>
+            Password:
+          </Text>
+          <TextInput
+            placeholder="Password"
+            style={{ backgroundColor: "white", height: 50 }}
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+          />
+        </View>
 
-      <View style={{ margin: 38 }}>
-        <Pressable
-          style={{
-            backgroundColor: "white",
-            borderColor: "black",
-            padding: 5,
-            marginTop: 20,
-            height: 50,
-          }}
-          onPress={handelLogin}
-        >
-          <Text
+        <View style={{ margin: 38 }}>
+          <Pressable
             style={{
-              textAlign: "center",
-              marginTop: 8,
-              fontSize: 22,
-              color: "#452817",
+              backgroundColor: "white",
+              borderColor: "black",
+              padding: 5,
+              marginTop: 20,
+              height: 50,
             }}
+            onPress={handelLogin}
           >
-            Login
+            <Text
+              style={{
+                textAlign: "center",
+                marginTop: 8,
+                fontSize: 22,
+                color: "#452817",
+              }}
+            >
+              Login
+            </Text>
+          </Pressable>
+        </View>
+
+        <Pressable
+          onPress={() => router.replace("/signin/register")}
+          style={{ marginTop: 20 }}
+        >
+          <Text style={{ textAlign: "center", color: "#452817", fontSize: 20 }}>
+            New user
           </Text>
         </Pressable>
-      </View>
-
-      <Pressable
-        onPress={() => router.replace("/signin/register")}
-        style={{ marginTop: 20 }}
-      >
-        <Text style={{ textAlign: "center", color: "#452817", fontSize: 20 }}>
-          New user
-        </Text>
-      </Pressable>
-    </SafeAreaView>
+      </SafeAreaView>
+    </LinearGradient>
   );
 };
 

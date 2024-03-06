@@ -10,6 +10,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import axios from "axios";
+import { LinearGradient } from "expo-linear-gradient";
 
 const register = () => {
   const [name, setName] = useState("");
@@ -42,74 +43,76 @@ const register = () => {
   };
 
   return (
-    <SafeAreaView style={{ backgroundColor: "green", flexGrow: 10 }}>
-      <Text style={styles.siteName}>FurryPals</Text>
+    <LinearGradient colors={["#FDBB2D", "#22C1C3"]} style={{ flex: 1 }}>
+      <SafeAreaView style={{ flexGrow: 10 }}>
+        <Text style={styles.siteName}>FurryPals</Text>
 
-      <Text style={styles.title}>Register</Text>
+        <Text style={styles.title}>Register</Text>
 
-      <View style={{ margin: 30 }}>
-        <Text style={{ color: "#452817", fontSize: 18 }}>Pups name:</Text>
-        <TextInput
-          placeholder="Pups name here"
-          style={{ backgroundColor: "white", height: 50 }}
-          value={name}
-          onChangeText={(text) => setName(text)}
-        />
-      </View>
+        <View style={{ margin: 30 }}>
+          <Text style={{ color: "#452817", fontSize: 18 }}>Pups name:</Text>
+          <TextInput
+            placeholder="Pups name here"
+            style={{ backgroundColor: "white", height: 50 }}
+            value={name}
+            onChangeText={(text) => setName(text)}
+          />
+        </View>
 
-      <View style={{ margin: 30 }}>
-        <Text style={{ color: "#452817", fontSize: 18 }}>Email:</Text>
-        <TextInput
-          placeholder="Email"
-          style={{ backgroundColor: "white", height: 50 }}
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-        />
-      </View>
+        <View style={{ margin: 30 }}>
+          <Text style={{ color: "#452817", fontSize: 18 }}>Email:</Text>
+          <TextInput
+            placeholder="Email"
+            style={{ backgroundColor: "white", height: 50 }}
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+          />
+        </View>
 
-      <View style={{ margin: 30 }}>
-        <Text style={{ color: "#452817", fontSize: 18 }}>Password:</Text>
-        <TextInput
-          placeholder="Password"
-          style={{ backgroundColor: "white", height: 50 }}
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-        />
-      </View>
+        <View style={{ margin: 30 }}>
+          <Text style={{ color: "#452817", fontSize: 18 }}>Password:</Text>
+          <TextInput
+            placeholder="Password"
+            style={{ backgroundColor: "white", height: 50 }}
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+          />
+        </View>
 
-      <View style={{ margin: 38 }}>
-        <Pressable
-          style={{
-            backgroundColor: "white",
-            borderColor: "black",
-            padding: 5,
-            marginTop: 20,
-            height: 50,
-          }}
-          onPress={handelRegister}
-        >
-          <Text
+        <View style={{ margin: 38 }}>
+          <Pressable
             style={{
-              textAlign: "center",
-              marginTop: 8,
-              fontSize: 22,
-              color: "#452817",
+              backgroundColor: "white",
+              borderColor: "black",
+              padding: 5,
+              marginTop: 20,
+              height: 50,
             }}
+            onPress={handelRegister}
           >
-            Register
+            <Text
+              style={{
+                textAlign: "center",
+                marginTop: 8,
+                fontSize: 22,
+                color: "#452817",
+              }}
+            >
+              Register
+            </Text>
+          </Pressable>
+        </View>
+
+        <Pressable
+          onPress={() => router.replace("/signin/login")}
+          style={{ marginTop: 30 }}
+        >
+          <Text style={{ textAlign: "center", color: "#452817", fontSize: 20 }}>
+            Existing user
           </Text>
         </Pressable>
-      </View>
-
-      <Pressable
-        onPress={() => router.replace("/signin/login")}
-        style={{ marginTop: 30 }}
-      >
-        <Text style={{ textAlign: "center", color: "#452817", fontSize: 20 }}>
-          Existing user
-        </Text>
-      </Pressable>
-    </SafeAreaView>
+      </SafeAreaView>
+    </LinearGradient>
   );
 };
 

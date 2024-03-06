@@ -10,6 +10,7 @@ import axios from "axios";
 import { useRouter } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
 import UserChat from "../../components/Userchat";
+import { LinearGradient } from "expo-linear-gradient";
 
 const index = () => {
   const router = useRouter();
@@ -81,60 +82,64 @@ const index = () => {
 
   //console.log('matches', matches)
   return (
-    <View style={{ backgroundColor: "green", flex: 1, padding: 10 }}>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Text style={{ fontSize: 20, fontWeight: "bold", color: "white" }}>
-          Chats
-        </Text>
-        <Ionicons name="chatbox-ellipses-outline" size={25} color="white" />
-      </View>
-
-      <Pressable
-        onPress={() =>
-          router.push({
-            pathname: "screens/chat/select",
-            params: {
-              profiles: JSON.stringify(profiles),
-              userId: userId,
-            },
-          })
-        }
-        style={{
-          marginVertical: 12,
-          flexDirection: "row",
-          alignItems: "center",
-        }}
-      >
+    <LinearGradient colors={["#FDBB2D", "#22C1C3"]} style={{ flex: 1 }}>
+      <View style={{ flex: 1, padding: 10 }}>
         <View
           style={{
-            width: 50,
-            height: 50,
-            borderRadius: 25,
-            backgroundColor: "#E0E0E0",
-            justifyContent: "center",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Text style={{ fontSize: 20, fontWeight: "bold", color: "white" }}>
+            Chats
+          </Text>
+          <Ionicons name="chatbox-ellipses-outline" size={25} color="white" />
+        </View>
+
+        <Pressable
+          onPress={() =>
+            router.push({
+              pathname: "screens/chat/select",
+              params: {
+                profiles: JSON.stringify(profiles),
+                userId: userId,
+              },
+            })
+          }
+          style={{
+            marginVertical: 12,
+            flexDirection: "row",
             alignItems: "center",
           }}
         >
-          <Feather name="heart" size={24} color="black" />
-        </View>
-        <Text style={{ fontSize: 17, marginLeft: 10, flex: 1, color: "white" }}>
-          You have got {profiles?.length} likes
-        </Text>
-        <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
-      </Pressable>
+          <View
+            style={{
+              width: 50,
+              height: 50,
+              borderRadius: 25,
+              backgroundColor: "#E0E0E0",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Feather name="heart" size={24} color="black" />
+          </View>
+          <Text
+            style={{ fontSize: 17, marginLeft: 10, flex: 1, color: "white" }}
+          >
+            You have got {profiles?.length} likes
+          </Text>
+          <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
+        </Pressable>
 
-      <View>
-        {matches?.map((item, index) => (
-          <UserChat key={index} item={item} userId={userId} />
-        ))}
+        <View>
+          {matches?.map((item, index) => (
+            <UserChat key={index} item={item} userId={userId} />
+          ))}
+        </View>
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 

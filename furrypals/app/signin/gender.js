@@ -6,6 +6,7 @@ import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
 
 const gender = () => {
   const [option, setOption] = useState("");
@@ -43,80 +44,82 @@ const gender = () => {
   };
 
   return (
-    <SafeAreaView style={{ backgroundColor: "green", flexGrow: 10 }}>
-      <Pressable
-        onPress={() => setOption("male")}
-        style={{
-          backgroundColor: "white",
-          margin: 10,
-          height: 80,
-          borderColor: option === "male" ? "brown" : "transparent",
-          borderWidth: option == "male" ? 1 : 0,
-        }}
-      >
-        <Text
+    <LinearGradient colors={["#FDBB2D", "#22C1C3"]} style={{ flex: 1 }}>
+      <SafeAreaView style={{ flexGrow: 10 }}>
+        <Pressable
+          onPress={() => setOption("male")}
           style={{
-            fontSize: 30,
-            fontWeight: "bold",
-            marginLeft: 10,
-            marginTop: 20,
-            color: "brown",
+            backgroundColor: "white",
+            margin: 10,
+            height: 80,
+            borderColor: option === "male" ? "brown" : "transparent",
+            borderWidth: option == "male" ? 1 : 0,
           }}
         >
-          I am a Male
-        </Text>
-        <Image src={"#"} />
-      </Pressable>
-
-      <Pressable
-        onPress={() => setOption("female")}
-        style={{
-          backgroundColor: "white",
-          margin: 10,
-          height: 80,
-          borderColor: option === "female" ? "brown" : "transparent",
-          borderWidth: option == "female" ? 1 : 0,
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 30,
-            fontWeight: "bold",
-            marginLeft: 10,
-            marginTop: 20,
-            color: "brown",
-          }}
-        >
-          I am a Female
-        </Text>
-        <Image src={"#"} />
-      </Pressable>
-
-      {option && (
-        <View style={{ marginTop: 60 }}>
-          <Pressable
-            onPress={heandleGender}
+          <Text
             style={{
-              backgroundColor: "white",
-              margin: 20,
-              height: 60,
+              fontSize: 30,
+              fontWeight: "bold",
+              marginLeft: 10,
+              marginTop: 20,
+              color: "brown",
             }}
           >
-            <Text
+            I am a Male
+          </Text>
+          <Image src={"#"} />
+        </Pressable>
+
+        <Pressable
+          onPress={() => setOption("female")}
+          style={{
+            backgroundColor: "white",
+            margin: 10,
+            height: 80,
+            borderColor: option === "female" ? "brown" : "transparent",
+            borderWidth: option == "female" ? 1 : 0,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 30,
+              fontWeight: "bold",
+              marginLeft: 10,
+              marginTop: 20,
+              color: "brown",
+            }}
+          >
+            I am a Female
+          </Text>
+          <Image src={"#"} />
+        </Pressable>
+
+        {option && (
+          <View style={{ marginTop: 60 }}>
+            <Pressable
+              onPress={heandleGender}
               style={{
-                fontSize: 30,
-                fontWeight: "bold",
-                marginTop: 10,
-                textAlign: "center",
-                color: "brown",
+                backgroundColor: "white",
+                margin: 20,
+                height: 60,
               }}
             >
-              Done
-            </Text>
-          </Pressable>
-        </View>
-      )}
-    </SafeAreaView>
+              <Text
+                style={{
+                  fontSize: 30,
+                  fontWeight: "bold",
+                  marginTop: 10,
+                  textAlign: "center",
+                  color: "brown",
+                }}
+              >
+                Done
+              </Text>
+            </Pressable>
+          </View>
+        )}
+      </SafeAreaView>
+    </LinearGradient>
   );
 };
 

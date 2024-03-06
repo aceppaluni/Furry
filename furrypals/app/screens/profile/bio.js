@@ -18,6 +18,7 @@ import "core-js/stable/atob";
 import { jwtDecode } from "jwt-decode";
 import Carousel from "react-native-snap-carousel";
 import { Entypo, AntDesign } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 
 const bio = () => {
   const [userId, setUserid] = useState("");
@@ -191,246 +192,254 @@ const bio = () => {
   };
 
   return (
-    <ScrollView style={{ backgroundColor: "green", marginTop: 3 }}>
-      <Text
-        style={{
-          fontSize: 32,
-          fontWeight: "bold",
-          marginTop: 4,
-          marginLeft: 4,
-          color: "#452817",
-        }}
-      >
-        FurryPals
-      </Text>
-      <View>
+    <LinearGradient colors={["#FDBB2D", "#22C1C3"]} style={{ flex: 1 }}>
+      <ScrollView style={{ marginTop: 3 }}>
+        <Text
+          style={{
+            fontSize: 32,
+            fontWeight: "bold",
+            marginTop: 4,
+            marginLeft: 4,
+            color: "#452817",
+          }}
+        >
+          FurryPals
+        </Text>
         <View>
           <View>
-            <Pressable
-              style={{
-                backgroundColor: "#452817",
-                position: "absolute",
-                padding: 10,
-                justifyContent: "center",
-                alignItems: "center",
-                marginLeft: "auto",
-                marginRight: "auto",
-                width: 300,
-                left: "50%",
-                transform: [{ translateX: -150 }],
-                top: 35,
-                borderRadius: 10,
-              }}
-            >
-              <Image
-                style={{ width: 50, height: 60, borderRadius: 20 }}
-                source={{
-                  uri: "https://images.unsplash.com/photo-1552053831-71594a27632d?q=80&w=1562&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                }}
-              />
-              <Text
+            <View>
+              <Pressable
                 style={{
-                  fontSize: 16,
-                  fontWeight: "600",
-                  marginTop: 6,
-                  color: "white",
+                  backgroundColor: "#452817",
+                  position: "absolute",
+                  padding: 10,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  width: 300,
+                  left: "50%",
+                  transform: [{ translateX: -150 }],
+                  top: 35,
+                  borderRadius: 10,
                 }}
               >
-                Buster
-              </Text>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: "600",
-                  marginTop: 6,
-                  color: "white",
-                }}
-              >
-                I am 2 years old
-              </Text>
-            </Pressable>
+                <Image
+                  style={{ width: 50, height: 60, borderRadius: 20 }}
+                  source={{
+                    uri: "https://images.unsplash.com/photo-1552053831-71594a27632d?q=80&w=1562&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                  }}
+                />
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontWeight: "600",
+                    marginTop: 6,
+                    color: "white",
+                  }}
+                >
+                  Buster
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontWeight: "600",
+                    marginTop: 6,
+                    color: "white",
+                  }}
+                >
+                  I am 2 years old
+                </Text>
+              </Pressable>
+            </View>
           </View>
         </View>
-      </View>
 
-      <View
-        style={{
-          marginTop: 180,
-          marginHorizontal: 20,
-          flexDirection: "row",
-          alignItems: "center",
-          gap: 25,
-          justifyContent: "center",
-        }}
-      >
-        <Pressable onPress={() => setOption("about")}>
-          <Text style={{ color: option == "about" ? "white" : "black" }}>
-            About
-          </Text>
-        </Pressable>
-        <Pressable onPress={() => setOption("photos")}>
-          <Text style={{ color: option == "photos" ? "white" : "black" }}>
-            Photos
-          </Text>
-        </Pressable>
-        <Pressable onPress={() => setOption("looking for")}>
-          <Text style={{ color: option == "looking for" ? "white" : "black" }}>
-            Looking for
-          </Text>
-        </Pressable>
-      </View>
-
-      <View style={{ marginHorizontal: 14, marginVertical: 15 }}>
-        {option == "about" && (
-          <View
-            style={{
-              borderColor: "#452817",
-              borderWidth: 1,
-              padding: 10,
-              borderRadius: 10,
-              height: 300,
-            }}
-          >
-            <TextInput
-              value={description}
-              onChangeText={(text) => setDescription(text)}
-              multiline
-              style={{ borderRadius: 10, fontSize: description ? 17 : 17 }}
-              placeholderTextColor={"white"}
-              placeholder="Write about Pup"
-            />
-            <Pressable
-              style={{
-                backgroundColor: "#452817",
-                marginTop: "auto",
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 15,
-                borderRadius: 5,
-                justifyContent: "center",
-                padding: 10,
-              }}
-              onPress={updateUserDescription}
+        <View
+          style={{
+            marginTop: 180,
+            marginHorizontal: 20,
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 25,
+            justifyContent: "center",
+          }}
+        >
+          <Pressable onPress={() => setOption("about")}>
+            <Text style={{ color: option == "about" ? "white" : "black" }}>
+              About
+            </Text>
+          </Pressable>
+          <Pressable onPress={() => setOption("photos")}>
+            <Text style={{ color: option == "photos" ? "white" : "black" }}>
+              Photos
+            </Text>
+          </Pressable>
+          <Pressable onPress={() => setOption("looking for")}>
+            <Text
+              style={{ color: option == "looking for" ? "white" : "black" }}
             >
-              <Text
-                style={{ textAlign: "center", color: "white", fontSize: 20 }}
-              >
-                Publish
-              </Text>
-            </Pressable>
-          </View>
-        )}
-      </View>
+              Looking for
+            </Text>
+          </Pressable>
+        </View>
 
-      <View style={{ marginHorizontal: 14, marginTop: 2 }}>
-        {option == "photos" && (
-          <View>
-            <Carousel
-              data={images}
-              renderItem={renderImageCarousel}
-              sliderWidth={350}
-              itemWidth={300}
-              onSnapToItem={(index) => setActiveSlide(index)}
-              style={{ borderWidth: 2 }}
-            />
-            <View style={{ marginTop: 2 }}>
-              <Text style={{ fontSize: 20, color: "#452817", margin: 4 }}>
-                Add photos of pup
-              </Text>
-              <View
+        <View style={{ marginHorizontal: 14, marginVertical: 15 }}>
+          {option == "about" && (
+            <View
+              style={{
+                borderColor: "#452817",
+                borderWidth: 1,
+                padding: 10,
+                borderRadius: 10,
+                height: 300,
+              }}
+            >
+              <TextInput
+                value={description}
+                onChangeText={(text) => setDescription(text)}
+                multiline
                 style={{
+                  borderRadius: 10,
+                  color: "white",
+                  fontSize: description ? 17 : 17,
+                }}
+                placeholderTextColor={"white"}
+                placeholder="Write about Pup"
+              />
+              <Pressable
+                style={{
+                  backgroundColor: "#452817",
+                  marginTop: "auto",
                   flexDirection: "row",
                   alignItems: "center",
-                  gap: 5,
-                  paddingVertical: 5,
+                  gap: 15,
                   borderRadius: 5,
-                  marginTop: 10,
-                  backgroundColor: "#DCDCDC",
+                  justifyContent: "center",
+                  padding: 10,
                 }}
+                onPress={updateUserDescription}
               >
-                <Entypo
-                  style={{ marginLeft: 8 }}
-                  name="image"
-                  size={24}
-                  color="gray"
-                />
-                <TextInput
-                  value={imageUrl}
-                  onChangeText={(text) => setImageUrl(text)}
-                  placeholder="image url"
-                  style={{ color: "gray", marginVertical: 10, width: 300 }}
+                <Text
+                  style={{ textAlign: "center", color: "white", fontSize: 20 }}
+                >
+                  Publish
+                </Text>
+              </Pressable>
+            </View>
+          )}
+        </View>
+
+        <View style={{ marginHorizontal: 14, marginTop: 2 }}>
+          {option == "photos" && (
+            <View>
+              <Carousel
+                data={images}
+                renderItem={renderImageCarousel}
+                sliderWidth={350}
+                itemWidth={300}
+                onSnapToItem={(index) => setActiveSlide(index)}
+                style={{ borderWidth: 2 }}
+              />
+              <View style={{ marginTop: 2 }}>
+                <Text style={{ fontSize: 20, color: "#452817", margin: 4 }}>
+                  Add photos of pup
+                </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 5,
+                    paddingVertical: 5,
+                    borderRadius: 5,
+                    marginTop: 10,
+                    backgroundColor: "#DCDCDC",
+                  }}
+                >
+                  <Entypo
+                    style={{ marginLeft: 8 }}
+                    name="image"
+                    size={24}
+                    color="gray"
+                  />
+                  <TextInput
+                    value={imageUrl}
+                    onChangeText={(text) => setImageUrl(text)}
+                    placeholder="image url"
+                    style={{ color: "gray", marginVertical: 10, width: 300 }}
+                  />
+                </View>
+                <Button
+                  onPress={handelAddImage}
+                  style={{ marginTop: 5 }}
+                  title="Add image"
+                ></Button>
+              </View>
+            </View>
+          )}
+        </View>
+
+        <View>
+          {option == "looking for" && (
+            <>
+              <View>
+                <FlatList
+                  columnWrapperStyle={{ justifyContent: "space-between" }}
+                  numColumns={2}
+                  data={data}
+                  renderItem={({ item }) => (
+                    <Pressable
+                      onPress={() => handelOption(item?.name)}
+                      style={{
+                        backgroundColor: lookingOptions.includes(item?.name)
+                          ? "#FDBB2D"
+                          : "#452817",
+                        padding: 16,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: 150,
+                        margin: 10,
+                        borderRadius: 5,
+                        borderColor: "white",
+                        borderWidth: lookingOptions.includes(item?.name || "")
+                          ? 0
+                          : 2,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          textAlign: "center",
+                          fontWeight: "500",
+                          fontSize: 13,
+                          color: lookingOptions.includes(item?.name)
+                            ? "#452817"
+                            : "white",
+                        }}
+                      >
+                        {item.name}
+                      </Text>
+                      <Text
+                        style={{
+                          color: lookingOptions.includes(item?.name)
+                            ? "#452817"
+                            : "white",
+                          textAlign: "center",
+                          width: 140,
+                          marginTop: 10,
+                          fontSize: 13,
+                        }}
+                      >
+                        {item.description}
+                      </Text>
+                    </Pressable>
+                  )}
                 />
               </View>
-              <Button
-                onPress={handelAddImage}
-                style={{ marginTop: 5 }}
-                title="Add image"
-              ></Button>
-            </View>
-          </View>
-        )}
-      </View>
-
-      <View>
-        {option == "looking for" && (
-          <>
-            <View>
-              <FlatList
-                columnWrapperStyle={{ justifyContent: "space-between" }}
-                numColumns={2}
-                data={data}
-                renderItem={({ item }) => (
-                  <Pressable
-                    onPress={() => handelOption(item?.name)}
-                    style={{
-                      backgroundColor: lookingOptions.includes(item?.name)
-                        ? "#FDBB2D"
-                        : "#452817",
-                      padding: 16,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      width: 150,
-                      margin: 10,
-                      borderRadius: 5,
-                      borderColor: "white",
-                      borderWidth: lookingOptions.includes(item?.name || "")
-                        ? 0
-                        : 2,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        textAlign: "center",
-                        fontWeight: "500",
-                        fontSize: 13,
-                        color: lookingOptions.includes(item?.name)
-                          ? "#452817"
-                          : "white",
-                      }}
-                    >
-                      {item.name}
-                    </Text>
-                    <Text
-                      style={{
-                        color: lookingOptions.includes(item?.name)
-                          ? "#452817"
-                          : "white",
-                        textAlign: "center",
-                        width: 140,
-                        marginTop: 10,
-                        fontSize: 13,
-                      }}
-                    >
-                      {item.description}
-                    </Text>
-                  </Pressable>
-                )}
-              />
-            </View>
-          </>
-        )}
-      </View>
-    </ScrollView>
+            </>
+          )}
+        </View>
+      </ScrollView>
+    </LinearGradient>
   );
 };
 
